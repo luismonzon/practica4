@@ -9,6 +9,10 @@ router.get('/', function(req, res, next) {
   res.render('index', { title: 'Practica 4' });
 });
 
+router.get('/manual', function(req, res, next) {
+  res.render('manual', { title: 'Practica 4' });
+});
+
 router.get('/Consultas', function(req, res, next) {
 	var page="Consultas";	
 	refrescar(req,res,page);
