@@ -3,9 +3,6 @@ var router = express.Router();
 var pg = require('pg');
 var bodyParser = require('body-parser')
 router.use(bodyParser());
-var rres;
-
-
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -31,11 +28,9 @@ var rutas="";
 	results=results+result.rows[i].BUS+","+result.rows[i].NOMBRE.trim()+","+result.rows[i].rut.trim()+","+result.rows[i].RUTA.trim()+";";	
 	}
 	});
-
-
-
-client.query('select ruta."RUTA", ruta."NOMBRE" as rut, parada."PARADA", parada."NOMBRE", "ORDEN" from "ASIGNA_RUTA" asig, "RUTA" ruta, "PARADA" parada where asig."RUTA"=ruta."RUTA" and asig."PARADA"=parada."PARADA"', function(err, result) { 
-		
+    
+    client.query('select ruta."RUTA", ruta."NOMBRE" as rut, parada."PARADA", parada."NOMBRE", "ORDEN" from "ASIGNA_RUTA" asig, "RUTA" ruta, "PARADA" parada where asig."RUTA"=ruta."RUTA" and asig."PARADA"=parada."PARADA"', function(err, result) { 	
+	
 	for(var i in result.rows){
 	rutas=rutas+result.rows[i].RUTA.trim()+","+result.rows[i].rut.trim()+","+result.rows[i].PARADA+","+result.rows[i].NOMBRE.trim()+","+result.rows[i].ORDEN+";";	
 	}console.log(rutas);
@@ -54,7 +49,7 @@ client.query('select ruta."RUTA", ruta."NOMBRE" as rut, parada."PARADA", parada.
 
 
 router.get('/Consulta1', function(req, res){
-	refresh2(req,res);
+	refrescar2(res,req);
 });
 
 
@@ -69,7 +64,7 @@ router.post('/nuevobus', function(req, res){
 	if(err) throw err;
 	});
 	var page="ABC";
-	refrescar2(req,res);	
+	refrescar2(res,req);	
 });
 
 
@@ -84,7 +79,7 @@ router.post('/nuevotipo', function(req, res){
 	{
 	if(err) throw err;
 	});
-	refrescar2(req,res);	
+	refrescar2(res,req);	
 });
 
 
@@ -97,8 +92,11 @@ router.post('/eliminarbus', function(req, res){
 	{
 	if(err) throw err;
 	});
-	refrescar2(req,res);	
+
+	refrescar2(res,req);	
 });
+
+
 
 
 router.post('/cambiarbus', function(req, res){
@@ -113,11 +111,11 @@ router.post('/cambiarbus', function(req, res){
 	{
 	if(err) throw err;
 	});
-	refrescar2(req,res);	
+	refrescar2(res,req);	
 });
 
 
-function refresh2(res,req)
+function refrescar2(res,req)
 {
 	var results="";
 	var tipo="";
@@ -131,21 +129,17 @@ function refresh2(res,req)
 
 });
 
-
 client.query('select "NOMBRE" FROM "TIPO_BUS"', function(err, result) { 
 	for(var i in result.rows){
 	tipo=tipo+result.rows[i].NOMBRE.trim()+",";	
 	}
 });
-	
-	
-
-	var millisecondsToWait = 100;
+	var millisecondsToWait = 500;
 	setTimeout(function() {
 		client.end();
-		rres=results;
 		res.render('ABC', { title: 'ABC', valor: results, tipos: tipo});
 	}, millisecondsToWait);
+
 }
 
 
