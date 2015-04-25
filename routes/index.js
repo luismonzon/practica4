@@ -19,6 +19,7 @@ function refrescar(req,res,page){
 
 var results="";
 var rutas="";
+var paradas="";
 	var connectionString = process.env.DATABASE_URL || 'postgres://luis:spiderman@localhost:5432/practica4';
 	var client = new pg.Client(connectionString);
 	client.connect();
@@ -36,10 +37,18 @@ var rutas="";
 	}console.log(rutas);
 	});
 
+    client.query('select * from "PARADA"', function(err, result) { 
+		
+	for(var i in result.rows){
+	paradas=paradas+result.rows[i].PARADA+","+result.rows[i].NOMBRE.trim()+","+result.rows[i].LOCALIZACION.trim()+";";	
+	}
+	});
+ 
+
 	var millisecondsToWait = 100;
 	setTimeout(function() {
 		client.end();
-		res.render(page, { title: page, valor: results, ruta: rutas});
+		res.render(page, { title: page, valor: results, ruta: rutas, parada: paradas});
 	}, millisecondsToWait); 
 
     
@@ -96,7 +105,31 @@ router.post('/eliminarbus', function(req, res){
 	refrescar2(res,req);	
 });
 
+router.get('/Comprar', function(req, res){
+	res.render('Comprar');	
+});
 
+
+router.post('/asignabus', function(req, res){
+	var connectionString = process.env.DATABASE_URL || 'postgres://luis:spiderman@localhost:5432/practica4';
+	var client = new pg.Client(connectionString);
+	client.connect();
+	var bus = req.body.bus;
+	var ruta = req.body.ruta;
+
+	var query2 =  client.query('insert into "ASIGNA_BUS" ("BUS","RUTA") values (\''+bus+'\',\''+ruta+'\');',function(err,rows,fields)
+	{
+	if(err) throw err;
+	});
+
+	refrescar(req,res,'Consultas');		
+});
+
+
+
+router.get('/Comprar', function(req, res){
+	res.render('Comprar');	
+});
 
 
 router.post('/cambiarbus', function(req, res){
@@ -113,6 +146,54 @@ router.post('/cambiarbus', function(req, res){
 	});
 	refrescar2(res,req);	
 });
+
+
+
+router.post('/crearuta', function(req, res){
+	var connectionString = process.env.DATABASE_URL || 'postgres://luis:spiderman@localhost:5432/practica4';
+	var client = new pg.Client(connectionString);
+	client.connect();
+	var id = req.body.ruta;
+	var nombre = req.body.nombre;
+	var query2 =  client.query('insert into "RUTA"("RUTA","NOMBRE") values (\''+id+'\',\''+nombre+'\');',function(err,rows,fields)
+	{
+	if(err) throw err;
+	});
+	refrescar(req,res,'Consultas');	
+});
+
+
+
+router.post('/crearparada', function(req, res){
+	var connectionString = process.env.DATABASE_URL || 'postgres://luis:spiderman@localhost:5432/practica4';
+	var client = new pg.Client(connectionString);
+	client.connect();
+	var id = req.body.numero;
+	var nombre = req.body.parada;
+	var loc=req.body.local;
+	var query2 =  client.query('insert into "PARADA"("PARADA","NOMBRE","LOCALIZACION") values (\''+id+'\',\''+nombre+'\',\''+loc+'\');',function(err,rows,fields)
+	{
+	if(err) throw err;
+	});
+	refrescar(req,res,'Consultas');	
+});
+
+
+router.post('/asignaruta', function(req, res){
+	var connectionString = process.env.DATABASE_URL || 'postgres://luis:spiderman@localhost:5432/practica4';
+	var client = new pg.Client(connectionString);
+	client.connect();
+	var id = req.body.ruta;
+	var tipo = req.body.parada;
+	var orden =req.body.orden;
+	var query2 =  client.query('insert into "ASIGNA_RUTA" ("RUTA","PARADA","ORDEN") values (\''+id+'\',\''+tipo+'\',\''+orden+'\');',function(err,rows,fields)
+	{
+	if(err) throw err;
+	});
+	refrescar(req,res,'Consultas');	
+});
+
+
 
 
 function refrescar2(res,req)
@@ -141,10 +222,6 @@ client.query('select "NOMBRE" FROM "TIPO_BUS"', function(err, result) {
 	}, millisecondsToWait);
 
 }
-
-
-
-
 
 
 module.exports = router;

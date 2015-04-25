@@ -35,7 +35,7 @@
               <ul class="dropdown-menu" role="menu">
                 <li><a href="/Consultas">Rutas Y Buses</a></li>
                 <li><a href="/Consulta1">ABC Buses</a></li>
-                <li><a href="#">Comprar Ticket</a></li>
+                <li><a href="/Comprar">Comprar Ticket</a></li>
  		<li><a href="#">Viajes</a></li>
                 <li class="divider"></li>
                 <li class="dropdown-header">Ingreso Datos</li>
@@ -115,6 +115,88 @@
   </table>
     </div>
 </div>
+
+<div class="container">
+    <div class="jumbotron">
+    <p>Paradas</p>
+   <table class="table table-bordered">
+      <thead>
+        <tr>
+    <th>Parada</th>
+    <th>Nombre Parada</th>
+    <th>Localizacion</th>
+        </tr>
+      </thead>
+  <tbody>
+      <% 
+    var da = parada.split(";");
+    for (var i in da){ %>
+        <tr><%  var da2 =da[i].split(","); 
+      for(var j  in da2  ){ %>
+      <td><%= da2[j].toString(); %></td>       
+      <%}
+    %>
+        </tr>
+      <% } %>
+    
+  </tbody>
+  </table>
+  <br>
+
+  <form action="/crearuta" method="post">
+   <label for="inputefault">No Ruta Nueva</label>
+       <input class="form-control" name="ruta" id="ruta" type="text">
+        <br>
+   <label for="inputefault">Nombre Ruta Nueva</label>
+        <input class="form-control" name="nombre" id="nombre" type="text">
+        <br>
+         <button class="btn btn-default"  type="submit">Crear</button>
+    </form> 
+<br>
+<p>Asigna Parada a Ruta</p>
+  <form action="/asignaruta" method="post">
+   <label for="inputefault">No Ruta</label>
+       <input class="form-control" name="ruta" id="ruta" type="text">
+        <br>
+   <label for="inputefault">ID Parada</label>
+        <input class="form-control" name="parada" id="parada" type="text">
+        <br>
+    <label for="inputefault">Orden</label>
+        <input class="form-control" name="orden" id="orden" type="text">
+        <br>
+
+          <button class="btn btn-default"  type="submit">Crear</button>
+    </form> 
+<br>
+<p>Crear Parada</p>
+  <form action="/crearparada" method="post">
+   <label for="inputefault">No Parada</label>
+       <input class="form-control" name="numero" id="numero" type="text">
+        <br>
+   <label for="inputefault">Nombre Parada</label>
+        <input class="form-control" name="parada" id="parada" type="text">
+        <br>
+  <label for="inputefault">Localizacion</label>
+        <input class="form-control" name="local" id="local" type="text">
+        <br>
+          <button class="btn btn-default"  type="submit">Crear</button>
+    </form> 
+<br>
+
+<p>Asignar Bus a Ruta</p>
+  <form action="/asignabus" method="post">
+   <label for="inputefault">Bus</label>
+       <input class="form-control" name="bus" id="numero" type="text">
+        <br>
+   <label for="inputefault">Ruta</label>
+        <input class="form-control" name="ruta" id="parada" type="text">
+        <br>
+          <button class="btn btn-default"  type="submit">Crear</button>
+    </form> 
+    </div>
+    
+</div>
+
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
     <script src="/javascripts/bootstrap.min.js"></script>
