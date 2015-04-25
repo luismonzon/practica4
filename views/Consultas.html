@@ -48,7 +48,6 @@
       </div>
     </nav>
     <div class="container">
-
       <!-- Main component for a primary marketing message or call to action -->
       <div class="jumbotron">
         <h1>Buses y Rutas</h1>
@@ -79,7 +78,6 @@
 		%>
 	      </tr>
 	    <% } %>
-  	
 	</tbody>
 	</table>
     </div>
@@ -143,6 +141,32 @@
   </table>
   <br>
 
+
+    <p>Rutas</p>
+   <table class="table table-bordered">
+      <thead>
+        <tr>
+    <th>No. Ruta</th>
+    <th>NOmbre</th>
+        </tr>
+      </thead>
+  <tbody>
+      <% 
+    var d = rutalist.split(";");
+    for (var i in d){ %>
+        <tr><%  var d2 =d[i].split(","); 
+      for(var j  in d2  ){ %>
+      <td><%= d2[j].toString(); %></td>       
+      <%}
+    %>
+        </tr>
+      <% } %>
+    
+  </tbody>
+  </table>
+  <br>
+
+
   <form action="/crearuta" method="post">
    <label for="inputefault">No Ruta Nueva</label>
        <input class="form-control" name="ruta" id="ruta" type="text">
@@ -194,7 +218,7 @@
           <button class="btn btn-default"  type="submit">Crear</button>
     </form> 
     </div>
-    
+
 </div>
 
 

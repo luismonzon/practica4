@@ -20,6 +20,7 @@ function refrescar(req,res,page){
 var results="";
 var rutas="";
 var paradas="";
+var rout="";
 	var connectionString = process.env.DATABASE_URL || 'postgres://luis:spiderman@localhost:5432/practica4';
 	var client = new pg.Client(connectionString);
 	client.connect();
@@ -43,12 +44,19 @@ var paradas="";
 	paradas=paradas+result.rows[i].PARADA+","+result.rows[i].NOMBRE.trim()+","+result.rows[i].LOCALIZACION.trim()+";";	
 	}
 	});
- 
+ 	
+
+    client.query('select * from "RUTA"', function(err, result) { 
+		
+	for(var i in result.rows){
+	rout=rout+result.rows[i].RUTA.trim()+","+result.rows[i].NOMBRE.trim()+";";	
+	}
+	});
 
 	var millisecondsToWait = 100;
 	setTimeout(function() {
 		client.end();
-		res.render(page, { title: page, valor: results, ruta: rutas, parada: paradas});
+		res.render(page, { title: page, valor: results, ruta: rutas, parada: paradas, rutalist: rout});
 	}, millisecondsToWait); 
 
     
