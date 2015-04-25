@@ -99,6 +99,36 @@ router.post('/nuevotipo', function(req, res){
 });
 
 
+router.post('/eliminarbus', function(req, res){
+	var connectionString = process.env.DATABASE_URL || 'postgres://luis:spiderman@localhost:5432/practica4';
+	var client = new pg.Client(connectionString);
+	client.connect();
+	var id = req.body.nombre;
+	var tipo = req.body.numero;
+	
+	var query2 =  client.query('delete from "BUS" where "BUS"='+id+';',function(err,rows,fields)
+	{
+	if(err) throw err;
+	});
+	var page="ABC";
+	refrescar(req,res,'ABC');	
+});
+
+
+router.post('/cambiarbus', function(req, res){
+	var connectionString = process.env.DATABASE_URL || 'postgres://luis:spiderman@localhost:5432/practica4';
+	var client = new pg.Client(connectionString);
+	client.connect();
+	var id = req.body.nombre;
+	var tipo = req.body.numero;
+	
+	var query2 =  client.query('insert into "TIPO_BUS"("NOMBRE","NUMERO_ASIENTO") values (\''+id+'\',\''+tipo+'\');',function(err,rows,fields)
+	{
+	if(err) throw err;
+	});
+	var page="ABC";
+	refrescar(req,res,'ABC');	
+});
 
 
 module.exports = router;

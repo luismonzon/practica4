@@ -88,8 +88,11 @@
 	 <label for="inputefault">Id Bus</label>
      	 <input class="form-control" name="id" id="id" type="text">
 	 <br>
-          <button class="btn btn-default"  type="submit">Crear</a>
+          <button class="btn btn-default"  type="submit">Crear</button>
         </form>
+
+
+
 	<p>Crear Tipo de Bus</p>
 	<form action="/nuevotipo" method="post">
 	 <label for="inputefault">Nombre</label>
@@ -99,17 +102,15 @@
 	  <br>
           <button class="btn btn-default"  type="submit">Crear</a>
         </form>	
-	
 	</div>
-		
     </div>
 
 <div class="container">
 	<div class="jumbotron">
 	<p>Eliminar Bus</p>
-	<form action="/nuevotipo" method="post">
-	 <label for="inputefault">Nombre</label>
-     	 <input class="form-control" name="nombre" id="nombre" type="text">
+	<form action="/eliminarbus" method="post">
+	 <label for="inputefault">No Bus</label>
+     	 <input class="form-control" name="id" id="id" type="text">
      	  <br>
           <button class="btn btn-default"  type="submit">Crear</a>
         </form>	
@@ -119,9 +120,12 @@
 <div class="container">
 	<div class="jumbotron">
 	<p>Modificar Bus</p>
-	<form action="/nuevotipo" method="post">
-	 <label for="inputefault">Nombre</label>
-     	 <input class="form-control" name="nombre" id="nombre" type="text">
+	<form action="/cambiarbus" method="post">
+	 <label for="inputefault">No Bus</label>
+     	 <input class="form-control" name="numero" id="numero" type="text">
+     	 <label for="inputefault">No. Asientos</label>
+     	 <input class="form-control" name="tipo" id="tipo" type="text">
+	  <br>
      	  <br>
           <button class="btn btn-default"  type="submit">Crear</a>
         </form>	
