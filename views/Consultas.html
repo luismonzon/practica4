@@ -83,6 +83,37 @@
 	</table>
     </div>
 </div>
+
+
+<div class="container">
+    <div class="jumbotron">
+   <table class="table table-bordered">
+      <thead>
+        <tr>
+    <th>Ruta</th>
+    <th>Nombre Ruta</th>
+    <th>Parada</th>
+    <th>Nombre Parada</th>
+    <th>Orden</th>
+        </tr>
+      </thead>
+  <tbody>
+      <% 
+    var data = ruta.split(";");
+    for (var i in data){ %>
+        <tr><%  var data2 =data[i].split(","); 
+      for(var j  in data2  ){ %>
+      <td><%= data2[j].toString(); %></td>       
+      <%}
+    %>
+        </tr>
+      <% } %>
+    
+  </tbody>
+  </table>
+    </div>
+</div>
+
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
     <script src="/javascripts/bootstrap.min.js"></script>
   </body>
