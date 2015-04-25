@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>Fixed Top Navbar Example for Bootstrap</title>
+    <!-- Bootstrap core CSS -->
+    <link href="/stylesheets/bootstrap.min.css" rel="stylesheet">
+    <script src="http://localhost:3000/socket.io/socket.io.js"></script>
+  </head>
+
+  <body>
+
+    <!-- Fixed navbar -->
+        <nav class="navbar navbar-default navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="/">Usac</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li class="active"><a href="/">Home</a></li>
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Consultas<span class="caret"></span></a>
+              <ul class="dropdown-menu" role="menu">
+                <li><a href="/Consultas">Rutas Y Buses</a></li>
+                <li><a href="/Consulta1">ABC Buses</a></li>
+                <li><a href="#">Comprar Ticket</a></li>
+ 		<li><a href="#">Viajes</a></li>
+                <li class="divider"></li>
+                <li class="dropdown-header">Ingreso Datos</li>
+                <li><a href="#">Rutas</a></li>
+                <li><a href="#">Proveedores</a></li>
+              </ul>
+            </li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </nav>
+    <div class="container">
+
+      <!-- Main component for a primary marketing message or call to action -->
+      <div class="jumbotron">
+        <h1>Buses y Rutas</h1>
+        <p>Se muestran las rutas disponibles en el sistema ademas de los buses que tiene asignados para que funcionen dentro de ella</p>        
+      </div>
+
+    </div> 
+<div class="container">
+    <div class="jumbotron">
+        <p>Detalle</p>      
+	 <table class="table table-bordered">
+	    <thead>
+	      <tr>
+		<th>No. Bus</th>
+		<th>Tipo Bus</th>
+	      </tr>
+	    </thead>
+	<tbody>
+	    <% 
+		var local = valor.split(";");
+		for (var i in local){ %>
+	      <tr><% 	var local2 =local[i].split(","); 
+			for(var j  in local2  ){ %>
+			<td><%= local2[j].toString(); %></td>				
+			<%}
+		%>
+	      </tr>
+	    <% } %>
+  	
+	</tbody>
+	</table>
+
+	<p>Crear Bus</p>
+	<form action="/nuevobus" method="post">
+	 <label for="inputdefault">Id Tipo Bus</label>
+     	 <input class="form-control" name= "tipo" id="tipo" type="text">
+	 <label for="inputefault">Id Bus</label>
+     	 <input class="form-control" name="id" id="id" type="text">
+	 <br>
+          <button class="btn btn-default"  type="submit">Crear</a>
+        </form>
+	</div>
+	
+    </div>
+</div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <script src="/javascripts/bootstrap.min.js"></script>
+  </body>
+</html>
