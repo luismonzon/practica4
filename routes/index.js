@@ -1,40 +1,104 @@
 var express = require('express');
 var router = express.Router();
 var pg = require('pg');
-var results="s";
-var i=0;
+var bodyParser = require('body-parser')
+router.use(bodyParser());
+var rres;
+
+
+
 /* GET home page. */
 router.get('/', function(req, res, next) {
   res.render('index', { title: 'Practica 4' });
 });
 
 router.get('/Consultas', function(req, res, next) {
-	i++;
+	var page="Consultas";	
+	refrescar(req,res,page);
+});
 
+function refrescar(req,res,page){
+
+var results="";
 	var connectionString = process.env.DATABASE_URL || 'postgres://luis:spiderman@localhost:5432/practica4';
 	var client = new pg.Client(connectionString);
 	client.connect();
-  	
-	client.query('SELECT * FROM "RUTA"', function(err, result) {
-	  
-	  console.log(result.rows[0].RUTA, result.rows[0].NOMBRE);
-	  results=results+","+result.rows[0].RUTA.trim();
-	  results.concat();
- 		/*var json = JSON.stringify(result.rows);
-   		 res.writeHead(200, {'content-type':'application/json', 'content-length':Buffer.byteLength(json)}); 
-   		 res.end(json);*/
-	//  console.log('name: %s and age: %s', result.rows[00]['RUTA'], result.rows[1]['NOMBRE']);
-	res.render('Consultas', { title: 'Consultas', valor: results});
+	client.query('select bus."BUS", tipo."NOMBRE", ruta."NOMBRE" as rut, ruta."RUTA" from "ASIGNA_BUS" asigna, "BUS" bus, "RUTA" ruta, "TIPO_BUS" tipo where asigna."BUS"=bus."BUS" and ruta."RUTA"=asigna."RUTA" and bus."TIPO_BUS"=tipo."TIPO_BUS"', function(err, result) { 
 		
+	for(var i in result.rows){
+	results=results+result.rows[i].BUS+","+result.rows[i].NOMBRE.trim()+","+result.rows[i].rut.trim()+","+result.rows[i].RUTA.trim()+";";	
+	}
 	});
-	console.log(i);
-	console.log('cadena '+results);
-	});
+
+	var millisecondsToWait = 100;
+	setTimeout(function() {
+		client.end();
+		res.render(page, { title: page, valor: results});
+	}, millisecondsToWait);
+}
 
 
 router.get('/Consulta1', function(req, res){
+	var results="";
+	var tipo="";
+	var connectionString = process.env.DATABASE_URL || 'postgres://luis:spiderman@localhost:5432/practica4';
+	var client = new pg.Client(connectionString);
+	client.connect();
+	client.query('select bus."BUS", tipo."NOMBRE" from  "BUS" bus, "TIPO_BUS" tipo where  bus."TIPO_BUS"=tipo."TIPO_BUS"', function(err, result) { 
+	for(var i in result.rows){
+	results=results+result.rows[i].BUS+","+result.rows[i].NOMBRE.trim()+";";	
+	}
 
-res.render('Consultas', { title: 'Consultas', valor: row });
 });
+
+
+client.query('select "NOMBRE" FROM "TIPO_BUS"', function(err, result) { 
+	for(var i in result.rows){
+	tipo=tipo+result.rows[i].NOMBRE.trim()+",";	
+	}
+});
+	
+	
+
+	var millisecondsToWait = 100;
+	setTimeout(function() {
+		client.end();
+		rres=results;
+		res.render('ABC', { title: 'ABC', valor: results, tipos: tipo});
+	}, millisecondsToWait);
+});
+
+router.post('/nuevobus', function(req, res){
+	var connectionString = process.env.DATABASE_URL || 'postgres://luis:spiderman@localhost:5432/practica4';
+	var client = new pg.Client(connectionString);
+	client.connect();
+	var id = req.body.id;
+	var tipo = req.body.tipo;
+	var query2 =  client.query('insert into "BUS"("BUS","TIPO_BUS") values ('+id+','+tipo+');',function(err,rows,fields)
+	{
+	if(err) throw err;
+	});
+	var page="ABC";
+	refrescar(req,res,'ABC');	
+});
+
+
+router.post('/nuevotipo', function(req, res){
+	var connectionString = process.env.DATABASE_URL || 'postgres://luis:spiderman@localhost:5432/practica4';
+	var client = new pg.Client(connectionString);
+	client.connect();
+	var id = req.body.nombre;
+	var tipo = req.body.numero;
+	
+	var query2 =  client.query('insert into "TIPO_BUS"("NOMBRE","NUMERO_ASIENTO") values (\''+id+'\',\''+tipo+'\');',function(err,rows,fields)
+	{
+	if(err) throw err;
+	});
+	var page="ABC";
+	refrescar(req,res,'ABC');	
+});
+
+
+
 
 module.exports = router;
